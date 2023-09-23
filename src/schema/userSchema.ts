@@ -5,15 +5,15 @@ export const createUserSchema = object({
         name: string({
             required_error: "Name is a required field."
         }),
+        email: string({
+            required_error: "Email is a required field."
+        }).email("Please enter a valid email adress"),
         password: string({
             required_error: "Password is a required field."
         }).min(8, "Password must be at least 8 characters long."),
         confirmPassword: string({
             required_error: "Confirm password is a required field."
         }).min(8, "Password must be at least 8 characters long."),
-        email: string({
-            required_error: "Email is a required field."
-        }).email("Please enter a valid email adress"),
     }).refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match.",
         path: ["passwordConfirmation"]

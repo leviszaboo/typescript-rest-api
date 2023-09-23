@@ -25,15 +25,15 @@ const userSchema = new mongoose.Schema<IUser>({
 userSchema.pre("save", async function(next: (err?: Error) => void) {
     let user = this as IUser;
 
-    if (user.isModified('password')) {
+    if (!user.isModified('password')) {
+        console.log(user.isModified('password'))
         return next()
     }
 
     const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'));
 
     const hash = await bcrypt.hash(user.password, salt);
-
-    user.password = hash;
+    user.password = hash
 
     return next()
 })
